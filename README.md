@@ -3,6 +3,8 @@
 This project is a complete backend of any social media project. It contains all the necessary functionality that a social media needs.
 If you need additional functionality, feel free to add them accordingly!
 
+> Note: Update the settings file before running the project.
+
 ## Features
 This project contains the following features along with an admin panel and API's.
 - Authentication: Ability to register, login, change password, reset password, verify email address and logout. It contains the following API's.
