@@ -1,0 +1,6 @@
+INVALID_REQUEST_FORMAT = 'Invalid request format.'
+INVALID_LOGIN_CREDENTIAL = 'Invalid email or password.'
+NEW_PASSWORD_MISMATCH = 'New passwords do not match.'
+TOKEN_INVALID = 'Security code invalid or expired.'
+EMAIL_TAKEN = 'This email is already taken.'
+EMAIL_TOKEN_MISMATCH = 'Email and token mismatch.'
