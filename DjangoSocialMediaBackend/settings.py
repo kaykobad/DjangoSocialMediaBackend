@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Third Party Apps
+    'rest_framework',
+    'rest_framework.authtoken',
+    # Custom Apps
+    'account.apps.AccountConfig',
+    'configuration.apps.ConfigurationConfig',
+    'feedback.apps.FeedbackConfig',
+    'friend.apps.FriendConfig',
+    'feed.apps.FeedConfig',
 ]
 
 MIDDLEWARE = [
@@ -54,8 +64,7 @@ ROOT_URLCONF = 'DjangoSocialMediaBackend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -74,12 +83,25 @@ WSGI_APPLICATION = 'DjangoSocialMediaBackend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DEBUG:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'DATABASE_NAME',
+            'USER': 'USERNAME',
+            'PASSWORD': 'PASSWORD',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
+
+    }
 
 
 # Password validation
@@ -118,7 +140,39 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+
+if not DEBUG:
+    STATIC_ROOT = '/path/to/static/root/folder/'
 STATIC_URL = '/static/'
+
+# Media file serve location
+if DEBUG:
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+else:
+    MEDIA_ROOT = '/path/to/media/root/folder/'
+MEDIA_URL = '/media/'
+
+# Custom Settings
+
+# Token Timeout Settings
+TOKEN_TIMEOUT = 86400
+
+# Email Settings for Google SMTP
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'SMTP HOST ADDRESS'
+EMAIL_HOST_USER = 'USERNAME'
+EMAIL_HOST_PASSWORD = 'PASSWORD'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'EMAIL ADDRESS'
+
+# Rest Framework Authentication Mechanism
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
